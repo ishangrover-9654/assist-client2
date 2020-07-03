@@ -5,24 +5,9 @@ import { Helmet } from "react-helmet";
 function FAQ(props) {
   const [faq, setFaq] = useState([]);
 
-  // useEffect(() => {
-  //   getFAQs();
-  // }, []);
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  const getFAQs = () => {
-    axios
-      .get("https://api.covid19india.org/website_data.json")
-      .then((response) => {
-        setFaq(response.data["faq"]);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <div className="FAQ">

@@ -1,19 +1,32 @@
-import anime from "animejs";
-import React, { useState, useRef } from "react";
+import React from "react";
 import * as Icon from "react-feather";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RupeeIcon from "../RupeeIcon";
+import { faRupeeSign } from "@fortawesome/free-solid-svg-icons";
+
 //import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { useSpring, animated } from "react-spring";
-import { useEffectOnce, useLockBodyScroll, useWindowSize } from "react-use";
+import { useSpring } from "react-spring";
+import { useWindowSize } from "react-use";
+import { Layout, Menu } from "antd";
+import {
+  UserOutlined,
+  LaptopOutlined,
+  MedicineBoxTwoTone,
+} from "@ant-design/icons";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+import createPres2 from "./medical/CreatePres2";
+import findPrescription from "./medical/findPrescription";
+
+const { SubMenu } = Menu;
+const { Header, Content, Footer, Sider } = Layout;
 
 function Navbar({ pages }) {
-  // const { i18n, t } = useTranslation();
-  // const currentLanguage = Object.keys(locales).includes(i18n?.language)
-  //   ? i18n?.language
-  //   : i18n?.options?.fallbackLng[0];
-
-  //const [expand, setExpand] = useState(false);
-  //useLockBodyScroll(expand);
   const windowSize = useWindowSize();
 
   const [spring, set, stop] = useSpring(() => ({ opacity: 0 }));
@@ -21,94 +34,76 @@ function Navbar({ pages }) {
   stop();
 
   return (
-    <animated.div className="Navbar" style={spring}>
-      <div className="navbar-middle">
-        <Link to="/">
-          <span>Assisto</span>
-        </Link>
-      </div>
-
-      <div className="navbar-right">
-        {windowSize.width > 769 && (
-          <React.Fragment>
-            <span>
-              <Link to="/">
-                <Icon.Home {...activeNavIcon("/")} />
-              </Link>
-            </span>
-            <span>
-              <Link to="/">
-                <Icon.Users {...activeNavIcon("/")} />
-              </Link>
-            </span>
-            <span>
-              <Link to="/medical">
-                <Icon.Package {...activeNavIcon("/medical")} />
-              </Link>
-            </span>
-            <span>
-              <Link to="/about">
-                <Icon.HelpCircle {...activeNavIcon("/about")} />
-              </Link>
-            </span>
-            <span>{window.innerWidth > 768}</span>
-          </React.Fragment>
-        )}
-      </div>
-    </animated.div>
+    <Router>
+      <Layout>
+        <Header className="header">
+          <div className="logo" />
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
+            <Menu.Item key="1">Home</Menu.Item>
+            <Menu.Item key="2">FAQs</Menu.Item>
+            <Menu.Item key="3">Settings</Menu.Item>
+          </Menu>
+        </Header>
+        <Content style={{ padding: "0 50px" }}>
+          <Layout
+            className="site-layout-background"
+            style={{ padding: "24px 0" }}
+          >
+            <Sider className="site-layout-background" width={200}>
+              <Menu
+                mode="inline"
+                theme="dark"
+                defaultSelectedKeys={["1"]}
+                defaultOpenKeys={["sub1"]}
+                style={{ height: "100%" }}
+              >
+                <SubMenu
+                  key="sub1"
+                  icon={<MedicineBoxTwoTone />}
+                  title="Medical"
+                >
+                  <Menu.Item key="/createPres2">
+                    <Link to="/createPres2">Create</Link>
+                  </Menu.Item>
+                  <Menu.Item key="/findPrescription">
+                    <Link to="/findPrescription">Find</Link>
+                  </Menu.Item>
+                </SubMenu>
+                <SubMenu
+                  key="sub2"
+                  icon={<RupeeIcon style={{ color: "hotpink" }} />}
+                  title="Finance"
+                >
+                  <Menu.Item key="5">Expenses</Menu.Item>
+                  <Menu.Item key="6">Investment</Menu.Item>
+                  <Menu.Item key="7">Income</Menu.Item>
+                  <Menu.Item key="8">Reports</Menu.Item>
+                </SubMenu>
+              </Menu>
+            </Sider>
+            <Content style={{ padding: "0 24px", minHeight: 280 }}>
+              <Switch>
+                <Route
+                  path="/createPres2"
+                  exact
+                  component={createPres2}
+                ></Route>
+                <Route
+                  path="/findPrescription"
+                  exact
+                  component={findPrescription}
+                ></Route>
+              </Switch>
+            </Content>
+          </Layout>
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          ©2020 Developed by Ishan
+        </Footer>
+      </Layout>
+    </Router>
   );
 }
-
-// function Expand({ expand, pages, setExpand, windowSize }) {
-//   const expandElement = useRef(null);
-//   //const { t } = useTranslation();
-
-//   useEffectOnce(() => {
-//     anime({
-//       targets: expandElement.current,
-//       translateX: "10.5rem",
-//       easing: "easeOutExpo",
-//       duration: 250,
-//     });
-//   });
-
-//   return (
-//     <div
-//       className="expand"
-//       ref={expandElement}
-//       onMouseLeave={() => {
-//         if (windowSize.width > 769) setExpand(false);
-//       }}
-//     >
-//       {pages.map((page, i) => {
-//         if (page.showInNavbar === true) {
-//           return (
-//             <Link
-//               to={page.pageLink}
-//               key={i}
-//               onClick={() => {
-//                 setExpand(false);
-//               }}
-//             >
-//               <span
-//                 {...navLinkProps(page.pageLink, page.animationDelayForNavbar)}
-//               >
-//                 {page.displayName}
-//               </span>
-//             </Link>
-//           );
-//         }
-//         return null;
-//       })}
-
-//       {window.innerWidth < 768}
-
-//       <div className="expand-bottom fadeInUp" style={{ animationDelay: "1s" }}>
-//         <h5>{"A crowdsourced initiative."}</h5>
-//       </div>
-//     </div>
-//   );
-// }
 
 export default Navbar;
 
@@ -124,18 +119,3 @@ const activeNavIcon = (path) => ({
     stroke: window.location.pathname === path ? "#4c75f2" : "",
   },
 });
-
-// const SunMoon = ({ darkMode }) => {
-//   return (
-//     <div
-//       className="SunMoon"
-//       onClick={() => {
-//         darkMode.toggle();
-//       }}
-//     >
-//       <div>
-//         {darkMode.value ? <Icon.Sun color={"#ffc107"} /> : <Icon.Moon />}
-//       </div>
-//     </div>
-//   );
-// };

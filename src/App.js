@@ -1,9 +1,10 @@
 import "./App.scss";
+import "antd/dist/antd.css";
 import Navbar from "./components/navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 //import ScrollToTop from "./utils/ScrollToTop";
 
-import React, { lazy, useState } from "react";
+import React, { lazy } from "react";
 import { Helmet } from "react-helmet";
 //import { useTranslation } from "react-i18next";
 import {
@@ -18,6 +19,7 @@ const Home = lazy(() =>
   import("./components/home" /* webpackChunkName: "Home" */)
 );
 const FAQ = lazy(() => import("./components/faq"));
+const CREATEPRES = lazy(() => import("./components/medical/CreatePres2"));
 const Medical = lazy(() => import("./components/medical/medicalItem"));
 
 const schemaMarkup = {
@@ -52,18 +54,12 @@ function App() {
       displayName: "About",
       showInNavbar: true,
     },
-    // {
-    //   pageLink: "/createPrescription",
-    //   view: createPrescription,
-    //   displayName: "Create Prescription",
-    //   showInNavbar: false,
-    // },
-    /*{
-      pageLink: "/state/:stateCode",
-      view: State,
-      displayName: t("State"),
-      showInNavbar: false,
-    },*/
+    {
+      pageLink: "/about",
+      view: FAQ,
+      displayName: "About",
+      showInNavbar: true,
+    },
   ];
 
   return (

@@ -6,7 +6,7 @@ import FileUploaderScreen from "../../FileUploaderScreen";
 import FileRow from "../../FileRow";
 import SVGScaleLoop from "../../SVGScaleLoop";
 import "./styles.css";
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
 import PrescriptionForm from "./PrescriptionForm";
 
 const CreatePres2 = ({ children }) => {
